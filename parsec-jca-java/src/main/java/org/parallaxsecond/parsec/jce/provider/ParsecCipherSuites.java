@@ -46,6 +46,7 @@ public enum ParsecCipherSuites {
                                             PsaKeyAttributes.KeyType.RsaKeyPair.newBuilder()
                                                     .build())
                                     .build())
+                    .setKeyBits(4096)
                     .build());
     @Getter
     private final PsaKeyAttributes.KeyAttributes keyAttributes;
