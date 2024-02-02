@@ -29,7 +29,7 @@ class SecureRandomParsecTest {
 
   @Container
   ParsecContainer parsecContainer =
-      ParsecContainer.withVersion("0.8.1")
+          ParsecContainer.withVersion("latest")
           .withFileSystemBind(
               new File("src/test/resources/mbed-crypto-config.toml").getAbsolutePath(),
               "/etc/parsec/config.toml");

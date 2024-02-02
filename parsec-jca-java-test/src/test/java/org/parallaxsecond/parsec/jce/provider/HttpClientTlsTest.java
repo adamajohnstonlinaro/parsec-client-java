@@ -68,7 +68,7 @@ class HttpClientTlsTest {
 
     @Container
     ParsecContainer parsecContainer =
-            ParsecContainer.withVersion("0.8.1")
+            ParsecContainer.withVersion("latest")
                     .withFileSystemBind(
                             absFile("src/test/resources/mbed-crypto-config.toml"),
                             "/etc/parsec/config.toml");
