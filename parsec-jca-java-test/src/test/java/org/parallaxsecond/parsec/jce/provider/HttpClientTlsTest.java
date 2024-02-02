@@ -99,7 +99,9 @@ class HttpClientTlsTest {
 
         URI socketUri = parsecContainer.getSocketUri();
         Provider parsec = ParsecProvider.builder().socketUri(socketUri).build();
-        Security.insertProviderAt(parsec, 0);
+        Security.insertProviderAt(parsec, 1);
+        String result = Security.getProviders()[0].getName();
+        assertEquals("PARSEC", result, "Parsec provider not at expected position!");
 
         Path clientCertStoreFile = copyFromNginx("/keys/client_cert.jks");
         KeyStore clientCertStore = defaultKeystoreFromFile(clientCertStoreFile);
