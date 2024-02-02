@@ -76,7 +76,6 @@ public class ParsecContainer extends GenericContainer<ParsecContainer> {
 
   @Override
   public void close() {
-    super.close();
     if (this.cmd != null) {
       this.cmd.destroyForcibly();
       this.cmd = null;
