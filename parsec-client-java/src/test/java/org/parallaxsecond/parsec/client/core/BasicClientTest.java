@@ -41,7 +41,7 @@ class BasicClientTest {
         BasicClient.client(
             "parsec-tool", IpcHandler.connectFromUrl(parsecContainer.getSocketUri()));
     parsecContainer.parsecTool("create-ecc-key", "--key-name", eccKey);
-    parsecContainer.parsecTool("create-rsa-key", "--key-name", rsaKey);
+    parsecContainer.parsecTool("create-rsa-key", "--key-name", rsaKey, "--for-signing");
   }
   /**
    * would be good to have this dockerized ssh can forward AF_UNIX sockets
@@ -73,8 +73,8 @@ class BasicClientTest {
   void hash() {
     PsaAlgorithm.Algorithm.AsymmetricSignature keyargs =
         PsaAlgorithm.Algorithm.AsymmetricSignature.newBuilder()
-            .setEcdsa(
-                PsaAlgorithm.Algorithm.AsymmetricSignature.Ecdsa.newBuilder()
+            .setRsaPkcs1V15Sign(
+                PsaAlgorithm.Algorithm.AsymmetricSignature.RsaPkcs1v15Sign.newBuilder()
                     .setHashAlg(
                         PsaAlgorithm.Algorithm.AsymmetricSignature.SignHash.newBuilder()
                             .setSpecific(PsaAlgorithm.Algorithm.Hash.SHA_256)
@@ -84,17 +84,17 @@ class BasicClientTest {
 
     byte[] bytes = new byte[32];
     new SecureRandom().nextBytes(bytes);
-    NativeResult.PsaSignHashResult hashResult = client.psaSignHash(eccKey, bytes, keyargs);
+    NativeResult.PsaSignHashResult hashResult = client.psaSignHash(rsaKey, bytes, keyargs);
     byte[] signature = hashResult.getSignature();
     assertNotNull(signature);
 
     NativeResult.PsaVerifyHashResult verifiedResult =
-        client.psaVerifyHash(eccKey, bytes, keyargs, signature);
+        client.psaVerifyHash(rsaKey, bytes, keyargs, signature);
     assertNotNull(verifiedResult);
 
     try {
       bytes[0] += 1;
-      client.psaVerifyHash(eccKey, bytes, keyargs, signature);
+      client.psaVerifyHash(rsaKey, bytes, keyargs, signature);
       fail("signature must no verify");
     } catch (Exception e) {
       // OK
