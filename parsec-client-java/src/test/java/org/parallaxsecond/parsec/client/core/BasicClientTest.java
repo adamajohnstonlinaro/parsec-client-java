@@ -82,7 +82,7 @@ class BasicClientTest {
                     .build())
             .build();
 
-    byte[] bytes = new byte[1024];
+    byte[] bytes = new byte[32];
     new SecureRandom().nextBytes(bytes);
     NativeResult.PsaSignHashResult hashResult = client.psaSignHash(eccKey, bytes, keyargs);
     byte[] signature = hashResult.getSignature();
